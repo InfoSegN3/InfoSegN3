@@ -1,0 +1,141 @@
+.loginApp {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.systemInfos {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+
+    width: 50%;
+    color: white;
+    background-color: #1a3059;
+}
+
+.title > h2 {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.summary > h1 {
+    font-weight: bold;
+    font-size: 32px;
+}
+
+.systemLogin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    background-color: #f4f7f9;
+}
+
+.loginCard {
+    background: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    padding: 35px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.loginTitle {
+    margin-bottom: 25px;
+}
+
+.loginTitle h2 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    color: #0f172a;
+}
+
+.loginTitle p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.inputGroup label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.inputGroup input {
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #334155;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.inputGroup input:focus {
+    border-color: #1e3a8a;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+}
+
+.passwordHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.passwordHeader label {
+    margin-bottom: 0;
+}
+
+.forgotPassword {
+    font-size: 13px;
+    color: #1e3a8a;
+    text-decoration: none;
+}
+
+.forgotPassword:hover {
+    text-decoration: underline;
+}
+
+.btnLogin {
+    width: 100%;
+    background-color: #1a3059;
+    color: #ffffff;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.btnLogin:hover {
+    background-color: #122240;
+}
+
+.termsText {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #64748b;
+    text-align: center;
+    line-height: 1.4;
+}
