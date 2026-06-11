@@ -12,8 +12,10 @@
     <div class="loginApp">
         <div class="systemInfos">
             <div class="title">
-                <!-- img chapeu de formatura -->
-                 <h2>Agenda Acadêmica</h1>
+                <div class="academicCap">
+                    <img src="../../icons/academicCap.svg" alt="">
+                </div>
+                <h2>Agenda Acadêmica</h2>
             </div>
 
             <div class="summary">
@@ -36,7 +38,6 @@
 
                 <div class="loginFields">
                     <form action="processa_login.php" method="POST">
-                        
                         <div class="inputGroup">
                             <label for="email">E-mail</label>
                             <input type="email" id="email" name="email" placeholder="voce@instituicao.edu" required>
@@ -45,7 +46,6 @@
                         <div class="inputGroup">
                             <div class="passwordHeader">
                                 <label for="senha">Senha</label>
-                                <a href="#" class="forgotPassword">Esqueci minha senha</a>
                             </div>
                             <input type="password" id="senha" name="senha" required>
                         </div>
@@ -53,7 +53,8 @@
                         <button type="submit" class="btnLogin">Entrar</button>
 
                         <p class="termsText">Ao continuar, você concorda com os Termos e a Política de Privacidade.</p>
-                        
+
+                        <a href="#" class="register">Não tem uma conta? Cadastre-se aqui</a>
                     </form>
                 </div>
             </div>
