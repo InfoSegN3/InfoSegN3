@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="../../../backend/cadastro.php" method="POST">
+        <input name="nome" type="text" placeholder="nome">
+        <input name="email" type="email" placeholder="email">
+        <select name="tipoUsuario">
+            <option value="aluno">Aluno</option>
+            <option value="operador">Operador</option>
+            <option value="admin">Admin</option>
+        </select>
+        <button type="submit">Cadastrar</button>
+    </form>
+</body>
+</html>

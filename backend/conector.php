@@ -1,11 +1,19 @@
 <?php
-    date_default_timezone_set('America/Sao_Paulo');
-    
-    try{
-        $pdo = new PDO("mysql:dbname=agendamentos;host=localhost;charset=utf8","root","");
-    }
-    catch(PDOException $erro)
-    {
-        echo("ERRO NA CONEXÃO: <br>".$erro->getMessage());
-    }
-?>
+
+$host = "localhost";
+$db = "infosegn3";
+$user = "root";
+$pass = "";
+
+try {
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$db;charset=utf8",
+        $user,
+        $pass
+    );
+
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+} catch (PDOException $e) {
+    die("Erro ao conectar.");
+}
