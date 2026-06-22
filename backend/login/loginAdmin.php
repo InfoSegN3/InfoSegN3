@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("InfoSegN3\backend\cadastro.php");
+include("../conector.php");
 
 $email = $_POST["email"];
 $senha = md5($_POST["senha"]);
@@ -24,7 +24,7 @@ if ($validar->rowCount() == 0) {
     $_SESSION['nome']  = $admin['nome_admin'];
     $_SESSION['tipo']  = 'admin';
 
-    header('Location: ../../frontend/pages/admin/main.html');
+    header('Location: ../../frontend/pages/cadastro/cadastro.html');
     exit();
 }
 ?>
