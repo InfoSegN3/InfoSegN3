@@ -1,3 +1,14 @@
+<?php
+  session_start();
+
+  if (
+    !isset($_SESSION['id']) ||
+    !in_array($_SESSION['tipo'], ['aluno'])
+  ) {
+    header("Location: ../login/login.html");
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

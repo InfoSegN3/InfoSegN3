@@ -1,3 +1,14 @@
+<?php
+  session_start();
+
+  if (
+    !isset($_SESSION['id']) ||
+    !in_array($_SESSION['tipo'], ['admin', 'operador'])
+  ) {
+    header("Location: ../loginAdmin/loginAdmin.html");
+    exit();
+  }
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -11,10 +22,13 @@
   <form action="../../../backend/cadastro.php" method="POST">
     <input name="nome" type="text" placeholder="nome">
     <input name="email" type="email" placeholder="email">
-    <select name="tipoUsuario">
+    <<select name="tipoUsuario">
       <option value="aluno">Aluno</option>
       <option value="operador">Operador</option>
-      <option value="admin">Admin</option>
+
+      <?php if ($_SESSION['tipo'] === 'admin'): ?>
+          <option value="admin">Admin</option>
+      <?php endif; ?>
     </select>
     <button type="submit">Cadastrar</button>
   </form>

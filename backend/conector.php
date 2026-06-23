@@ -1,7 +1,7 @@
 <?php
 
 $host = "localhost";
-$db = "infosegn3";
+$db = "meu_banco";
 $user = "root";
 $pass = "";
 
