@@ -103,3 +103,90 @@
     height: 1.5rem;
     filter: brightness(0) invert(1);
 }
+
+.content {
+    flex: 1;
+    padding: 2rem;
+    background-color: #f5f7fb;
+}
+
+.content > h1 {
+    margin-bottom: 2rem;
+    color: #0b1f3b;
+}
+
+.usersContainer {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.usersHeader {
+    margin-bottom: 1.5rem;
+}
+
+.usersHeader > h2 {
+    color: #0b1f3b;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.usersHeader > p {
+    color: #6b7280;
+    font-size: 1.3rem;
+}
+
+.usersTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.usersTable th {
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+    font-size: 1.4rem;
+}
+
+.usersTable td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1.3rem;
+}
+
+.badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.perfil {
+    background-color: #f3f4f6;
+    color: #374151;
+    font-size: 1.3rem;
+}
+
+.ativo {
+    background-color: #dcfce7;
+    color: #15803d;
+    font-size: 1.3rem;
+}
+
+.inativo {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    font-size: 1.3rem;
+}
+
+.editButton {
+    color: #2684cf;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.editButton:hover {
+    text-decoration: underline;
+}
