@@ -103,3 +103,97 @@
     height: 1.5rem;
     filter: brightness(0) invert(1);
 }
+
+.content {
+    flex: 1;
+    padding: 2rem;
+    background-color: #f5f7fb;
+}
+
+.content > h1 {
+    margin-bottom: 2rem;
+    color: #0b1f3b;
+}
+
+.auditoriaContainer {
+    background-color: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.auditoriaHeader {
+    margin-bottom: 1.5rem;
+}
+
+.auditoriaHeader > h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #0b1f3b;
+    margin-bottom: 0.5rem;
+}
+
+.auditoriaHeader > p {
+    color: #6b7280;
+    font-size: 1.3rem;
+}
+
+.searchContainer {
+    margin-bottom: 1.5rem;
+}
+
+.searchContainer input {
+    width: 350px;
+    padding: 0.8rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.6rem;
+    outline: none;
+}
+
+.searchContainer input:focus {
+    border-color: #2684cf;
+}
+
+.auditoriaTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.auditoriaTable th {
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #374151;
+    font-size: 1.4rem;
+}
+
+.auditoriaTable td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 1.2rem;
+}
+
+.badge {
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.action {
+    background-color: #f3f4f6;
+    color: #374151;
+    font-size: 1.2rem;
+}
+
+.sucesso {
+    background-color: #dcfce7;
+    color: #15803d;
+    font-size: 1.2rem;
+}
+
+.falha {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    font-size: 1.2rem;
+}
