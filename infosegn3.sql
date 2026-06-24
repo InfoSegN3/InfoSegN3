@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 24/06/2026 às 02:29
+-- Tempo de geração: 24/06/2026 às 03:06
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -41,7 +41,8 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id_admin`, `nome_admin`, `email_admin`, `senha_admin`, `status_admin`, `primeirologin`) VALUES
-(1, 'Otavio', 'otavio@admin.edu.com', 'adc3ba9d85a03e6f78304dd77d17d04a', '1', 1);
+(1, 'Otavio', 'otavio@admin.edu.com', '827ccb0eea8a706c4c34a16891f84e7b', '1', 1),
+(2, 'Hosmar', 'henrique@admin.com', '827ccb0eea8a706c4c34a16891f84e7b', '1', 0);
 
 -- --------------------------------------------------------
 
@@ -73,17 +74,17 @@ CREATE TABLE `logs` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuario`
+-- Estrutura para tabela `usuarios`
 --
 
-CREATE TABLE `usuario` (
+CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `nome_usuario` varchar(80) DEFAULT NULL,
   `email_usuario` varchar(255) NOT NULL,
   `senha_usuario` varchar(255) NOT NULL,
-  `tipo_usuario` tinyint(1) NOT NULL,
   `ativo_usuario` tinyint(1) NOT NULL,
-  `primeiro_acesso` tinyint(1) NOT NULL
+  `primeiro_acesso` tinyint(1) NOT NULL,
+  `tipo_usuario` enum('professor','aluno') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -109,9 +110,9 @@ ALTER TABLE `logs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices de tabela `usuario`
+-- Índices de tabela `usuarios`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`),
   ADD UNIQUE KEY `email_usuario` (`email_usuario`);
 
@@ -123,7 +124,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de tabela `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `agendamentos`
@@ -138,9 +139,9 @@ ALTER TABLE `logs`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `usuario`
+-- AUTO_INCREMENT de tabela `usuarios`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
