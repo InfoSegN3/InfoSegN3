@@ -3,50 +3,83 @@ session_start();
 include("conector.php");
 include("gerarSenha.php");
 
-$tipoLogado = $_SESSION['tipo'];
-$idLogado = $_SESSION['id'];
-$nomeLogado = $_SESSION['nome'];
-
-$nome = $_POST["nome"];
-$email = $_POST["email"];
-$tipoUsuario = $_POST["tipoUsuario"];
-
-$executar = false;
-
-if ($tipoUsuario === 'admin' && $tipoLogado !== 'admin') {
-    die("Você não tem permissão para criar administradores.");
+if (!isset($_SESSION['tipo'])) {
+  die("Acesso negado.");
 }
 
+$tipoLogado = $_SESSION['tipo'];
+
+$nome = trim($_POST['nome']);
+$email = trim($_POST['email']);
+$tipoUsuario = $_POST['tipoUsuario'];
+
+// Apenas administradores podem cadastrar usuários
+if ($tipoLogado !== "admin") {
+  die("Você não possui permissão.");
+}
+
+// Validação do e-mail
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+  die("E-mail inválido.");
+}
+
+// Gera senha temporária
+$tamanhoSenha = ($tipoUsuario == "admin") ? 12 : 8;
+
+$senhaTemporaria = gerar_senha($tamanhoSenha, true, true, true, true);
+
+$senhaHash = password_hash($senhaTemporaria, PASSWORD_DEFAULT);
+
 switch ($tipoUsuario) {
-  case 'admin':
 
-    $senhaTemporaria = gerar_senha(12, true, true, true, true);
-    $senhaEncript = md5($senhaTemporaria);
-    $sql = $pdo->prepare("INSERT INTO admins (nome_admin, email_admin, senha_admin) VALUES (?, ?, ?)");
-    $sql->bindParam(1, $nome);
-    $sql->bindParam(2, $email);
-    $sql->bindParam(3, $senhaEncript);
-    $executar = $sql->execute();
+  case "admin":
+
+    // Verifica se o e-mail já existe
+    $sql = $pdo->prepare("SELECT COUNT(*) FROM admins WHERE email_admin = ?");
+    $sql->execute([$email]);
+
+    if ($sql->fetchColumn() > 0) {
+      die("Este e-mail já está cadastrado.");
+    }
+
+    $sql = $pdo->prepare("
+        INSERT INTO admins
+        (nome_admin, email_admin, senha_admin)
+        VALUES (?, ?, ?)
+    ");
+
+    $executar = $sql->execute([
+      $nome,
+      $email,
+      $senhaHash
+    ]);
+
     break;
 
-  case 'aluno':
-    $senhaTemporaria = gerar_senha(8, true, true, true, true);
-    $senhaEncript = md5($senhaTemporaria);
-    $sql = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
-    $sql->bindParam(1, $nome);
-    $sql->bindParam(2, $email);
-    $sql->bindParam(3, $senhaEncript);
-    $executar = $sql->execute();
-    break;
-  
-  case 'professor':
-    $senhaTemporaria = gerar_senha(8, true, true, true, true);
-    $senhaEncript = md5($senhaTemporaria);
-    $sql = $pdo->prepare("INSERT INTO usuarios (nome, email, senha, tipo_usuario) VALUES (?, ?, ?, 'professor')");
-    $sql->bindParam(1, $nome);
-    $sql->bindParam(2, $email);
-    $sql->bindParam(3, $senhaEncript);
-    $executar = $sql->execute();
+  case "professor":
+
+  case "aluno":
+
+    $sql = $pdo->prepare("SELECT COUNT(*) FROM usuarios WHERE email_usuario = ?");
+    $sql->execute([$email]);
+
+    if ($sql->fetchColumn() > 0) {
+      die("Este e-mail já está cadastrado.");
+    }
+
+    $sql = $pdo->prepare("
+        INSERT INTO usuarios
+        (nome_usuario, email_usuario, senha_usuario, tipo_usuario)
+        VALUES (?, ?, ?, ?)
+    ");
+
+    $executar = $sql->execute([
+      $nome,
+      $email,
+      $senhaHash,
+      $tipoUsuario
+    ]);
+
     break;
 
   default:
@@ -54,9 +87,12 @@ switch ($tipoUsuario) {
 }
 
 if ($executar) {
-    header('Location: ../frontend/pages/cadastro/cadastro.php?status=sucesso&senha=' . urlencode($senhaTemporaria));
+
+  $_SESSION['senha_temporaria'] = $senhaTemporaria;
+
+  header("Location: ../frontend/pages/cadastro/cadastro.php?status=sucesso");
 } else {
-    header('Location: ../frontend/pages/cadastro/cadastro.html?status=erro');
+  header("Location: ../frontend/pages/cadastro/cadastro.php?status=erro");
 }
+
 exit();
-?>

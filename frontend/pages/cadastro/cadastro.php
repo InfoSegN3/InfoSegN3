@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <script>
+  <script> //Este script gera em tela a senha aleatoria do usuário cadastrado, e permite que o usuário copie a senha para a área de transferência.
     const params = new URLSearchParams(window.location.search);
     const status = params.get('status');
     const senha = params.get('senha');

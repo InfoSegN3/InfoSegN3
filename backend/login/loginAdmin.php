@@ -2,29 +2,60 @@
 session_start();
 include("../conector.php");
 
-$email = $_POST["email"];
-$senha = md5($_POST["senha"]);
+$email = trim($_POST["email"]);
+$senha = $_POST["senha"];
 
-$validar = $pdo->prepare("SELECT * FROM admins WHERE email_admin = :email AND senha_admin = :senha");
-$validar->bindParam(':email', $email);
-$validar->bindParam(':senha', $senha);
-$validar->execute();
+// Procura o administrador pelo e-mail
+$sql = $pdo->prepare("SELECT * FROM admins WHERE email_admin = ?");
+$sql->execute([$email]);
 
-if ($validar->rowCount() == 0) {
+$admin = $sql->fetch(PDO::FETCH_ASSOC);
+
+// Verifica se encontrou o administrador
+if (!$admin) {
     echo "
-        <script type='text/javascript'>
-            alert('Email ou senha incorretos');
+        <script>
+            alert('E-mail ou senha incorretos.');
             window.location = '../../frontend/pages/loginAdmin/loginAdmin.html';
         </script>
     ";
-} else {
-    $admin = $validar->fetch(PDO::FETCH_ASSOC);
-
-    $_SESSION['id']    = $admin['id_admin'];
-    $_SESSION['nome']  = $admin['nome_admin'];
-    $_SESSION['tipo']  = 'admin';
-
-    header('Location: ../../frontend/pages/cadastro/cadastro.php');
     exit();
 }
+
+// Verifica se o administrador está ativo
+if (!$admin['status_admin']) {
+    echo "
+        <script>
+            alert('Administrador inativo.');
+            window.location = '../../frontend/pages/loginAdmin/loginAdmin.html';
+        </script>
+    ";
+    exit();
+}
+
+// Verifica a senha
+if (!password_verify($senha, $admin['senha_admin'])) {
+    echo "
+        <script>
+            alert('E-mail ou senha incorretos.');
+            window.location = '../../frontend/pages/loginAdmin/loginAdmin.html';
+        </script>
+    ";
+    exit();
+}
+
+// Cria a sessão
+$_SESSION['id'] = $admin['id_admin'];
+$_SESSION['nome'] = $admin['nome_admin'];
+$_SESSION['tipo'] = 'admin';
+
+// Verifica se é o primeiro login
+if ($admin['primeirologin']) {
+    header("Location: ../../frontend/pages/trocarSenha/trocarSenha.php");
+    exit();
+}
+
+// Login normal
+header("Location: ../../frontend/pages/cadastro/cadastro.php");
+exit();
 ?>
