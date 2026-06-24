@@ -28,7 +28,7 @@
 
                 <div class="agendamentos">
                     <img src="../../icons/dashboard.svg" alt="">
-                    <a href="../agendamentos/agendamentos.html">Meus Agendamentos</a>
+                    <a href="../agendamentos/agendamentos.php">Meus Agendamentos</a>
                 </div>
 
                 <div class="novoAgendamento">
@@ -49,7 +49,86 @@
         </div>
 
         <div class="content">
-            <h1>Página: Auditoria</h1>
+            <h1>Logs de Auditoria</h1>
+
+            <div class="auditoriaContainer">
+                <div class="auditoriaHeader">
+                    <h2>Eventos registrados</h2>
+                    <p>
+                        Registros simulados para fins de demonstração.
+                        Em produção, virão do serviço de auditoria.
+                    </p>
+                </div>
+
+                <div class="searchContainer">
+                    <input
+                        type="text"
+                        placeholder="Filtrar por usuário, ação ou IP..."
+                    >
+                </div>
+
+                <table class="auditoriaTable">
+                    <thead>
+                        <tr>
+                            <th>Data/Hora</th>
+                            <th>Usuário</th>
+                            <th>Ação</th>
+                            <th>Endereço IP</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>23/06/2026 19:41:14</td>
+                            <td>maria@aluno.edu</td>
+                            <td><span class="badge action">LOGIN</span></td>
+                            <td>192.168.0.10</td>
+                            <td><span class="badge sucesso">Sucesso</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>23/06/2026 18:41:14</td>
+                            <td>joao@univ.edu</td>
+                            <td><span class="badge action">CRIOU_AGENDAMENTO</span></td>
+                            <td>192.168.0.11</td>
+                            <td><span class="badge sucesso">Sucesso</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>23/06/2026 15:41:14</td>
+                            <td>maria@aluno.edu</td>
+                            <td><span class="badge action">LOGOUT</span></td>
+                            <td>192.168.0.14</td>
+                            <td><span class="badge falha">Falha</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>23/06/2026 14:41:14</td>
+                            <td>joao@univ.edu</td>
+                            <td><span class="badge action">EDITOU_USUARIO</span></td>
+                            <td>192.168.0.15</td>
+                            <td><span class="badge sucesso">Sucesso</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>23/06/2026 13:41:14</td>
+                            <td>carla@univ.edu</td>
+                            <td><span class="badge action">LOGIN</span></td>
+                            <td>192.168.0.16</td>
+                            <td><span class="badge sucesso">Sucesso</span></td>
+                        </tr>
+
+                        <tr>
+                            <td>23/06/2026 12:41:14</td>
+                            <td>pedro@aluno.edu</td>
+                            <td><span class="badge action">CRIOU_AGENDAMENTO</span></td>
+                            <td>192.168.0.17</td>
+                            <td><span class="badge falha">Falha</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>

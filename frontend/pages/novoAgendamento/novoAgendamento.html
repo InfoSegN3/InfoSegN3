@@ -28,7 +28,7 @@
 
                 <div class="agendamentos">
                     <img src="../../icons/dashboard.svg" alt="">
-                    <a href="../agendamentos/agendamentos.html">Meus Agendamentos</a>
+                    <a href="../agendamentos/agendamentos.php">Meus Agendamentos</a>
                 </div>
 
                 <div class="novoAgendamento">
@@ -49,7 +49,97 @@
         </div>
 
         <div class="content">
-            <h1>Página: Novo Agendamento</h1>
+            <h1>Novo Agendamento</h1>
+
+            <div class="agendamentoContainer">
+                <div class="agendamentoHeader">
+                    <h2>Detalhes do atendimento</h2>
+                    <p>
+                        Preencha as informações abaixo para enviar sua solicitação.
+                    </p>
+                </div>
+
+                <form class="agendamentoForm">
+
+                    <div class="formGroup">
+                        <label for="professor">
+                            Setor / Professor *
+                        </label>
+
+                        <select id="professor" name="professor">
+                            <option value="">Selecione...</option>
+
+                            <option value="joao">
+                                Prof. João Almeida - Sistemas de Informação
+                            </option>
+
+                            <option value="ana">
+                                Prof.ª Ana Ribeiro - Engenharia de Software
+                            </option>
+
+                            <option value="carlos">
+                                Prof. Carlos Souza - Banco de Dados
+                            </option>
+
+                            <option value="fernanda">
+                                Prof.ª Fernanda Lima - Redes
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="formGroup">
+                            <label for="data">Data *</label>
+
+                            <input
+                                type="date"
+                                id="data"
+                                name="data"
+                            >
+                        </div>
+
+                        <div class="formGroup">
+                            <label for="horario">Horário *</label>
+
+                            <input
+                                type="time"
+                                id="horario"
+                                name="horario"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="formGroup">
+                        <label for="motivo">
+                            Motivo do atendimento *
+                        </label>
+
+                        <textarea
+                            id="motivo"
+                            name="motivo"
+                            rows="6"
+                            placeholder="Descreva brevemente o assunto do atendimento..."
+                        ></textarea>
+                    </div>
+
+                    <div class="formActions">
+                        <button
+                            type="button"
+                            class="cancelButton"
+                        >
+                            Cancelar
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="submitButton"
+                        >
+                            Solicitar agendamento
+                        </button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </body>
