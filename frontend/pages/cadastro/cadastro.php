@@ -3,7 +3,7 @@
 
   if (
     !isset($_SESSION['id']) ||
-    !in_array($_SESSION['tipo'], ['admin', 'operador'])
+    !in_array($_SESSION['tipo'], ['admin'])
   ) {
     header("Location: ../loginAdmin/loginAdmin.html");
     exit();
