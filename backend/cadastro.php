@@ -29,20 +29,20 @@ switch ($tipoUsuario) {
     $executar = $sql->execute();
     break;
 
-  case 'operador':
+  case 'aluno':
     $senhaTemporaria = gerar_senha(8, true, true, true, true);
     $senhaEncript = md5($senhaTemporaria);
-    $sql = $pdo->prepare("INSERT INTO operador (nome_operador, email_operador, senha_operador) VALUES (?, ?, ?)");
+    $sql = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
     $sql->bindParam(1, $nome);
     $sql->bindParam(2, $email);
     $sql->bindParam(3, $senhaEncript);
     $executar = $sql->execute();
     break;
-
-  case 'aluno':
+  
+  case 'professor':
     $senhaTemporaria = gerar_senha(8, true, true, true, true);
     $senhaEncript = md5($senhaTemporaria);
-    $sql = $pdo->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
+    $sql = $pdo->prepare("INSERT INTO usuarios (nome, email, senha, tipo_usuario) VALUES (?, ?, ?, 'professor')");
     $sql->bindParam(1, $nome);
     $sql->bindParam(2, $email);
     $sql->bindParam(3, $senhaEncript);
