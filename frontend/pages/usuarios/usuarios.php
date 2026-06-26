@@ -93,6 +93,12 @@
                     <h2>Usuários cadastrados</h2>
                     <p>Total: <?= count($usuarios) ?></p>
                 </div>
+                <div class="tableActions">
+                    <a href="../cadastro/cadastro.php" class="addButton">
+                        <span>+</span>
+                        Adicionar Usuário
+                    </a>
+                </div>
 
                 <table class="usersTable">
                     <thead>

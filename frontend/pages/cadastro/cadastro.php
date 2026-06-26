@@ -1,17 +1,30 @@
 <?php
-    session_start();
+session_start();
 
-    if (
-        !isset($_SESSION['id']) ||
-        !in_array($_SESSION['tipo'], ['admin'])
-    ) {
-        header("Location: ../loginAdmin/loginAdmin.html");
-        exit();
-    }
+if (
+    !isset($_SESSION['id']) ||
+    !in_array($_SESSION['tipo'], ['admin'])
+) {
+    header("Location: ../loginAdmin/loginAdmin.html");
+    exit();
+}
+?>
+
+<?php
+
+
+if (
+    !isset($_SESSION['id']) ||
+    !in_array($_SESSION['tipo'], ['admin'])
+) {
+    header("Location: ../loginAdmin/loginAdmin.html");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -82,8 +95,7 @@
                 <form
                     action="../../../backend/cadastro.php"
                     method="POST"
-                    class="cadastroForm"
-                >
+                    class="cadastroForm">
                     <div class="formGroup">
                         <label for="nome"> Nome completo *</label>
 
@@ -92,8 +104,7 @@
                             id="nome"
                             name="nome"
                             placeholder="Digite o nome completo"
-                            required
-                        >
+                            required>
                     </div>
 
                     <div class="formGroup">
@@ -106,8 +117,7 @@
                             id="email"
                             name="email"
                             placeholder="Digite o e-mail"
-                            required
-                        >
+                            required>
                     </div>
 
                     <div class="formGroup">
@@ -118,8 +128,7 @@
                         <select
                             id="tipoUsuario"
                             name="tipoUsuario"
-                            required
-                        >
+                            required>
                             <option value="">
                                 Selecione...
                             </option>
@@ -156,26 +165,36 @@
 
     <div id="resultModal" class="modal">
         <div class="modalContent">
+
             <h2 id="modalTitulo"></h2>
 
-            <p id="modalMensagem"></p>
+            <p id="mensagem"></p>
 
-            <div id="senhaContainer" class="senhaContainer">
-                <span> Senha temporária gerada </span>
+            <div id="boxSenha" class="senhaContainer">
+
+                <span>Senha temporária gerada</span>
 
                 <strong id="senhaGerada"></strong>
 
-                <button type="button" id="copyPassword" class="copyButton">
+                <button
+                    type="button"
+                    class="copyButton">
                     Copiar senha
                 </button>
+
             </div>
 
-            <button type="button" id="closeModal" class="submitButton">
+            <button
+                type="button"
+                id="closeModal"
+                class="submitButton">
                 Fechar
             </button>
+
         </div>
     </div>
 
-    <script src="./cadastro.js"></script>
+    <script src="cadastro.js"></script>
 </body>
+
 </html>

@@ -87,10 +87,10 @@ switch ($tipoUsuario) {
 }
 
 if ($executar) {
-
-  $_SESSION['senha_temporaria'] = $senhaTemporaria;
-
-  header("Location: ../frontend/pages/cadastro/cadastro.php?status=sucesso");
+  header(
+    "Location: ../frontend/pages/cadastro/cadastro.php?status=sucesso&senha=" .
+    urlencode($senhaTemporaria)
+  );
 } else {
   header("Location: ../frontend/pages/cadastro/cadastro.php?status=erro");
 }
