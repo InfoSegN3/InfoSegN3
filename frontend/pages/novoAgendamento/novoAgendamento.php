@@ -8,6 +8,21 @@
     header("Location: ../login/login.html");
     exit();
   }
+    require_once("../../../backend/conector.php");
+
+    $stmt = $pdo->prepare("
+        SELECT
+            id_usuario,
+            nome_usuario
+            FROM usuarios
+            WHERE tipo_usuario = 'professor'
+            AND ativo_usuario = 1
+            ORDER BY nome_usuario
+    ");
+
+    $stmt->execute();
+
+    $professores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -65,6 +80,14 @@
                         <a href="../auditoria/auditoria.php">Logs de Auditoria</a>
                     </div>
                 <?php endif; ?>
+                <!-- LOGOUT AQUI -->
+                <div class="line"></div>
+
+                <div class="logout">
+                    <img src="../../icons/shield.svg" alt="">
+                    <a href="../../../backend/login/logout.php">Sair</a>
+                </div>
+
             </div>
         </div>
 
@@ -79,31 +102,29 @@
                     </p>
                 </div>
 
-                <form class="agendamentoForm">
+                <form class="agendamentoForm" action="../../../backend/agendamentoRequest.php" method="POST">
 
                     <div class="formGroup">
                         <label for="professor">
                             Setor / Professor *
                         </label>
 
-                        <select id="professor" name="professor">
-                            <option value="">Selecione...</option>
+                        <select id="professor" name="professor" required>
 
-                            <option value="joao">
-                                Prof. João Almeida - Sistemas de Informação
+                            <option value="">
+                            Selecione...
                             </option>
 
-                            <option value="ana">
-                                Prof.ª Ana Ribeiro - Engenharia de Software
+                            <?php foreach($professores as $professor): ?>
+
+                            <option value="<?= $professor['id_usuario']; ?>">
+
+                                <?= htmlspecialchars($professor['nome_usuario']); ?>
+
                             </option>
 
-                            <option value="carlos">
-                                Prof. Carlos Souza - Banco de Dados
-                            </option>
+                            <?php endforeach; ?>
 
-                            <option value="fernanda">
-                                Prof.ª Fernanda Lima - Redes
-                            </option>
                         </select>
                     </div>
 

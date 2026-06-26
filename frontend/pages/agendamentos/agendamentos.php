@@ -72,6 +72,11 @@
                     </div>
                 <?php endif; ?>
             </div>
+            <div class="line"></div>
+            <div class="logout">
+                <img src="../../icons/shield.svg" alt="">
+                <a href="../../../backend/login/logout.php">Sair</a>
+            </div>
         </div>
 
         <div class="content">

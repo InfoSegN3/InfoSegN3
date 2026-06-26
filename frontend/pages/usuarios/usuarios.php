@@ -11,7 +11,7 @@
 
   // Busca todos os usuários cadastrados
   include("../../../backend/conector.php");
-  $sql = $pdo->prepare("SELECT * FROM usuarios");
+  $sql = $pdo->prepare("SELECT nome_usuario, email_usuario, tipo_usuario, ativo_usuario FROM usuarios");
   $sql->execute();
   $usuarios = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -72,7 +72,17 @@
                         <a href="../auditoria/auditoria.php">Logs de Auditoria</a>
                     </div>
                 <?php endif; ?>
+
+                <!-- LOGOUT AQUI -->
+                <div class="line"></div>
+
+                <div class="logout">
+                    <img src="../../icons/shield.svg" alt="">
+                    <a href="../../../backend/login/logout.php">Sair</a>
+                </div>
+
             </div>
+            
         </div>
 
         <div class="content">
