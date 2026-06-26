@@ -60,7 +60,85 @@
         </div>
 
         <div class="content">
-            <h1>Página: Meus Agendamentos</h1>
+            <h1>Meus Agendamentos</h1>
+
+            <div class="appointmentsContainer">
+                <div class="appointmentsHeader">
+                    <h2>Histórico</h2>
+
+                    <p>Todos os seus agendamentos recentes.</p>
+                </div>
+
+                <table class="appointmentsTable">
+                    <thead>
+                        <tr>
+                            <th>Setor / Atendente</th>
+                            <th>Data e hora</th>
+                            <th>Motivo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="professor">
+                                    <strong>Prof. João Almeida</strong>
+                                    <span>Engenharia de Software</span>
+                                </div>
+                            </td>
+
+                            <td>26/06/2026, 21:19</td>
+
+                            <td>Dúvida sobre o projeto final.</td>
+
+                            <td>
+                                <a href="#" class="deleteButton">
+                                    Excluir
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="professor">
+                                    <strong>Secretaria Acadêmica</strong>
+                                    <span>Secretaria</span>
+                                </div>
+                            </td>
+
+                            <td>22/06/2026, 21:19</td>
+    
+                            <td>Solicitação de histórico escolar.</td>
+
+                            <td>
+                                <a href="#" class="deleteButton">
+                                    Excluir
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="professor">
+                                    <strong>Prof.ª Ana Ribeiro</strong>
+                                    <span>Banco de Dados</span>
+                                </div>
+                            </td>
+
+                            <td>20/06/2026, 14:00</td>
+
+                            <td>Revisão da prova.</td>
+
+                            <td>
+                                <a href="#" class="deleteButton">
+                                    Excluir
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>
