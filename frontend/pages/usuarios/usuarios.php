@@ -11,11 +11,12 @@
 
   // Busca todos os usuários cadastrados
   include("../../../backend/conector.php");
-  $sql = $pdo->prepare("SELECT * FROM agendamentos WHERE aluno_id = ?");
-  $sql->execute([$_SESSION['id']]);
-  $agendamentos = $sql->fetchAll(PDO::FETCH_ASSOC);
+  $sql = $pdo->prepare("SELECT * FROM usuarios");
+  $sql->execute();
+  $usuarios = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +25,7 @@
     <title>Agenda Acadêmica</title>
     
     <link rel="stylesheet" href="../../styles/style.css">
-    <link rel="stylesheet" href="./agendamentos.css">
+    <link rel="stylesheet" href="./usuarios.css">
 </head>
 <body>
     <div class="agendamentosApp">
@@ -75,8 +76,50 @@
         </div>
 
         <div class="content">
-            <h1>Página: Meus Agendamentos</h1>
+            <h1>Usuários</h1>
+
+            <div class="usersContainer">
+                <div class="usersHeader">
+                    <h2>Usuários cadastrados</h2>
+                    <p>Total: <?= count($usuarios) ?></p>
+                </div>
+
+                <table class="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Tipo</th>
+                            <th>Ativo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php foreach ($usuarios as $usuario) : ?>
+                            <tr>
+                                <td><?= $usuario['nome_usuario'] ?></td>
+                                <td><?= $usuario['email_usuario'] ?></td>
+                                <td>
+                                    <span class="badge perfil"><?= $usuario['tipo_usuario'] ?></span>
+                                </td>
+                                <td>
+                                    <span class="badge <?= $usuario['ativo_usuario'] === 1 ? 'ativo' : 'inativo' ?>">
+                                        <?= $usuario['ativo_usuario'] === 1 ? 'Ativo' : 'Inativo' ?>
+                                    </span>
+                                </td>
+                                <td class="actionsColumn">
+                                    <a href="#" class="editButton">Editar</a>
+                                    <a href="#" class="deleteButton">Excluir</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
+    <script src="./usuarios.js"></script>
 </body>
 </html>

@@ -56,6 +56,6 @@ if ($admin['primeirologin']) {
 }
 
 // Login normal
-header("Location: ../../frontend/pages/cadastro/cadastro.php");
+header("Location: ../../frontend/pages/agendamentos/agendamentos.php");
 exit();
 ?>

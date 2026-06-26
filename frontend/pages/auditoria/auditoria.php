@@ -1,3 +1,15 @@
+<?php
+  session_start();
+
+  if (
+    !isset($_SESSION['id']) ||
+    !in_array($_SESSION['tipo'], ['aluno','professor','admin'])
+  ) {
+    header("Location: ../login/login.html");
+    exit();
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,25 +38,33 @@
             <div class="navigation">
                 <p>Navegação</p>
 
-                <div class="agendamentos">
-                    <img src="../../icons/dashboard.svg" alt="">
-                    <a href="../agendamentos/agendamentos.php">Meus Agendamentos</a>
-                </div>
+                <?php if ($_SESSION['tipo'] === 'aluno' || $_SESSION['tipo'] === 'professor') : ?>
+                    <div class="agendamentos">
+                        <img src="../../icons/dashboard.svg" alt="">
+                        <a href="../agendamentos/agendamentos.php">Meus Agendamentos</a>
+                    </div>
+                <?php endif; ?>
 
-                <div class="novoAgendamento">
-                    <img src="../../icons/new.svg" alt="">
-                    <a href="../novoAgendamento/novoAgendamento.html">Novo Agendamento</a>
-                </div>
+                <?php if ($_SESSION['tipo'] === 'aluno') : ?>
+                    <div class="novoAgendamento">
+                        <img src="../../icons/new.svg" alt="">
+                        <a href="../novoAgendamento/novoAgendamento.php">Novo Agendamento</a>
+                    </div>
+                <?php endif; ?>
 
-                <div class="usuarios">
-                    <img src="../../icons/users.svg" alt="">
-                    <a href="../usuarios/usuarios.html">Usuários</a>
-                </div>
+                <?php if ($_SESSION['tipo'] === 'admin') : ?>
+                    <div class="usuarios">
+                        <img src="../../icons/users.svg" alt="">
+                        <a href="../usuarios/usuarios.php">Usuários</a>
+                    </div>
+                <?php endif; ?>
 
-                <div class="logs">
-                    <img src="../../icons/shield.svg" alt="">
-                    <a href="">Logs de Auditoria</a>
-                </div>
+                <?php if ($_SESSION['tipo'] === 'admin') : ?>
+                    <div class="logs">
+                        <img src="../../icons/shield.svg" alt="">
+                        <a href="../auditoria/auditoria.php">Logs de Auditoria</a>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
