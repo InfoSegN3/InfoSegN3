@@ -1,0 +1,13 @@
+# Arquivos de configuração sensíveis
+.env
+.env.*
+
+# Dependências (caso utilize Composer)
+vendor/
+
+# Arquivos de log
+*.log
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
