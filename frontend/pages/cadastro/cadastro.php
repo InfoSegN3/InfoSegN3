@@ -41,7 +41,6 @@ if (
                 <div class="academicCap">
                     <img src="../../icons/academicCap.svg" alt="">
                 </div>
-
                 <div class="markTexts">
                     <h2>Agenda Acadêmica</h2>
                     <p>Atendimentos</p>
@@ -80,6 +79,17 @@ if (
                         <a href="../auditoria/auditoria.php">Logs de Auditoria</a>
                     </div>
                 <?php endif; ?>
+            </div>
+            <div class="trocarSenha">
+                <img src="../../icons/key.svg" alt="">
+                <a href="#" id="abrirTrocaSenha">
+                    Trocar senha
+                </a>
+            </div>
+            <div class="line"></div>
+            <div class="logout">
+                <img src="../../icons/shield.svg" alt="">
+                <a href="../../../backend/login/logout.php">Sair</a>
             </div>
         </div>
 
@@ -193,6 +203,83 @@ if (
 
         </div>
     </div>
+        <div id="trocaSenhaModal" class="modal">
+
+        <div class="modalContent">
+
+            <h2>Trocar senha</h2>
+
+            <p>Informe sua senha atual e defina uma nova senha.</p>
+
+            <form
+                action="../../../backend/trocarSenha.php"
+                method="POST"
+                class="cadastroForm"
+            >
+
+                <div class="formGroup">
+
+                    <label>Senha atual</label>
+
+                    <input
+                        type="password"
+                        name="senhaAtual"
+                        required
+                    >
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>Nova senha</label>
+
+                    <input
+                        type="password"
+                        name="novaSenha"
+                        minlength="8"
+                        required
+                    >
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>Confirmar nova senha</label>
+
+                    <input
+                        type="password"
+                        name="confirmarSenha"
+                        minlength="8"
+                        required
+                    >
+
+                </div>
+
+                <div class="formActions">
+
+                    <button
+                        type="button"
+                        class="cancelButton"
+                        id="cancelarTrocaSenha"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="submitButton"
+                    >
+                        Alterar senha
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+    <script src="../../scripts/trocarSenha.js"></script>
 
     <script src="cadastro.js"></script>
 </body>
