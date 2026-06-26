@@ -1,31 +1,58 @@
 <?php
-  session_start();
+session_start();
 
-  if (
+if (
     !isset($_SESSION['id']) ||
-    !in_array($_SESSION['tipo'], ['aluno','professor','admin'])
-  ) {
+    !in_array($_SESSION['tipo'], ['aluno', 'professor', 'admin'])
+) {
     header("Location: ../login/login.html");
     exit();
-  }
+}
 
-  // Busca todos os usuários cadastrados
-  include("../../../backend/conector.php");
-  $sql = $pdo->prepare("SELECT * FROM agendamentos WHERE aluno_id = ?");
-  $sql->execute([$_SESSION['id']]);
-  $agendamentos = $sql->fetchAll(PDO::FETCH_ASSOC);
+include('../../../backend/conector.php');
 
+$consulta = $pdo->prepare("
+    SELECT
+        a.id,
+        a.data_agendamento,
+        a.horario,
+        a.motivo,
+        a.status,
+        professor.nome_usuario AS professor,
+        aluno.nome_usuario AS aluno
+    FROM agendamentos a
+
+    INNER JOIN usuarios professor
+        ON professor.id_usuario = a.professor_id
+
+    INNER JOIN usuarios aluno
+        ON aluno.id_usuario = a.aluno_id
+
+    WHERE " .
+    ($_SESSION['tipo'] == 'aluno'
+        ? "a.aluno_id = :id"
+        : "a.professor_id = :id") . "
+
+    ORDER BY a.data_agendamento DESC, a.horario DESC
+");
+
+$consulta->bindValue(":id", $_SESSION['id'], PDO::PARAM_INT);
+$consulta->execute();
+
+$agendamentos = $consulta->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Acadêmica</title>
-    
+
     <link rel="stylesheet" href="../../styles/style.css">
     <link rel="stylesheet" href="./agendamentos.css">
 </head>
+
 <body>
     <div class="agendamentosApp">
         <div class="sidebar">
@@ -92,7 +119,7 @@
                 <table class="appointmentsTable">
                     <thead>
                         <tr>
-                            <th>Setor / Atendente</th>
+                            <th>Professor / Aluno</th>
                             <th>Data e hora</th>
                             <th>Motivo</th>
                             <th>Ações</th>
@@ -100,66 +127,71 @@
                     </thead>
 
                     <tbody>
-                        <tr>
-                            <td>
-                                <div class="professor">
-                                    <strong>Prof. João Almeida</strong>
-                                    <span>Engenharia de Software</span>
-                                </div>
-                            </td>
 
-                            <td>26/06/2026, 21:19</td>
+                        <?php if (count($agendamentos) > 0): ?>
 
-                            <td>Dúvida sobre o projeto final.</td>
+                            <?php foreach ($agendamentos as $agendamento): ?>
 
-                            <td>
-                                <a href="#" class="deleteButton">
-                                    Excluir
-                                </a>
-                            </td>
-                        </tr>
+                                <tr>
 
-                        <tr>
-                            <td>
-                                <div class="professor">
-                                    <strong>Secretaria Acadêmica</strong>
-                                    <span>Secretaria</span>
-                                </div>
-                            </td>
+                                    <td>
+                                        <div class="professor">
+                                        <strong>
+                                            <?php
+                                                if ($_SESSION['tipo'] == 'aluno') {
+                                                    echo htmlspecialchars($agendamento['professor']);
+                                                } else {
+                                                    echo htmlspecialchars($agendamento['aluno']);
+                                                }
+                                            ?>
+                                        </strong>                                        </div>
+                                    </td>
 
-                            <td>22/06/2026, 21:19</td>
-    
-                            <td>Solicitação de histórico escolar.</td>
+                                    <td>
+                                        <?= date("d/m/Y", strtotime($agendamento['data_agendamento'])) ?>
+                                        às
+                                        <?= substr($agendamento['horario'], 0, 5) ?>
+                                    </td>
 
-                            <td>
-                                <a href="#" class="deleteButton">
-                                    Excluir
-                                </a>
-                            </td>
-                        </tr>
+                                    <td>
+                                        <?= htmlspecialchars($agendamento['motivo']) ?>
+                                    </td>
 
-                        <tr>
-                            <td>
-                                <div class="professor">
-                                    <strong>Prof.ª Ana Ribeiro</strong>
-                                    <span>Banco de Dados</span>
-                                </div>
-                            </td>
+                                    <td>
 
-                            <td>20/06/2026, 14:00</td>
+                                        <span><?= $agendamento['status'] ?></span>                                     |
+                                        <a
+                                            class="deleteButton"
+                                            href="../../../backend/excluirAgendamento.php?id=<?= $agendamento['id'] ?>"
+                                            onclick="return confirm('Deseja realmente excluir este agendamento?')">
 
-                            <td>Revisão da prova.</td>
+                                            Excluir
 
-                            <td>
-                                <a href="#" class="deleteButton">
-                                    Excluir
-                                </a>
-                            </td>
-                        </tr>
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            <?php endforeach; ?>
+
+                        <?php else: ?>
+
+                            <tr>
+
+                                <td colspan="4" style="text-align:center;">
+                                    Nenhum agendamento encontrado.
+                                </td>
+
+                            </tr>
+
+                        <?php endif; ?>
+
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </body>
+
 </html>
