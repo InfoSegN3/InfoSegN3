@@ -2,9 +2,7 @@
 session_start();
 include("conector.php");
 include("gerarSenha.php");
-
 include("registrarLog.php");
-registrarLog($pdo, "Usuário cadastrado");
 
 if (!isset($_SESSION['tipo'])) {
   die("Acesso negado.");
@@ -28,9 +26,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 // Gera senha temporária
 $tamanhoSenha = ($tipoUsuario == "admin") ? 12 : 8;
-
 $senhaTemporaria = gerar_senha($tamanhoSenha, true, true, true, true);
-
 $senhaHash = password_hash($senhaTemporaria, PASSWORD_DEFAULT);
 
 switch ($tipoUsuario) {
@@ -47,7 +43,7 @@ switch ($tipoUsuario) {
 
     $sql = $pdo->prepare("
         INSERT INTO admins
-        (nome_admin, email_admin, senha_admin, ativo_admin)
+        (nome_admin, email_admin, senha_admin, status_admin)
         VALUES (?, ?, ?, 1)
     ");
 
@@ -60,9 +56,9 @@ switch ($tipoUsuario) {
     break;
 
   case "professor":
-
   case "aluno":
 
+    // Verifica se o e-mail já existe
     $sql = $pdo->prepare("SELECT COUNT(*) FROM usuarios WHERE email_usuario = ?");
     $sql->execute([$email]);
 
@@ -90,6 +86,7 @@ switch ($tipoUsuario) {
 }
 
 if ($executar) {
+  registrarLog($pdo, "Usuário cadastrado: $email (tipo: $tipoUsuario)");
   header(
     "Location: ../frontend/pages/cadastro/cadastro.php?status=sucesso&senha=" .
     urlencode($senhaTemporaria)
