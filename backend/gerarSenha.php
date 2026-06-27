@@ -3,7 +3,7 @@ function gerar_senha($tamanho, $maiusculas, $minusculas, $numeros, $simbolos){
   $ma = "ABCDEFGHIJKLMNOPQRSTUVYXWZ"; // $ma contem as letras maiúsculas
   $mi = "abcdefghijklmnopqrstuvyxwz"; // $mi contem as letras minusculas
   $nu = "0123456789"; // $nu contem os números
-  $si = "!@#$%¨&*()_+="; // $si contem os símbolos
+  $si = "!@#$%&*()_+="; // $si contem os símbolos
   $senha = "";
 
   if ($maiusculas){

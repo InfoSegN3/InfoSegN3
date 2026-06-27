@@ -1,144 +1,108 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const editButtons = document.querySelectorAll(".editButton");
+const editButtons = document.querySelectorAll(".editButton");
 
-    editButtons.forEach(button => {
+editButtons.forEach(button => {
 
-        button.addEventListener("click", (event) => {
-            event.preventDefault();
+    button.addEventListener("click", (event) => {
 
-            const row = button.closest("tr");
+        event.preventDefault();
 
-            if (row.nextElementSibling?.classList.contains("editRow")) {
-                return;
-            }
+        const row = button.closest("tr");
 
-            const nome = row.children[0].textContent.trim();
-            const email = row.children[1].textContent.trim();
-            const perfil = row.children[2].textContent.trim();
+        if (row.nextElementSibling?.classList.contains("editRow")) {
+            return;
+        }
 
-            const ativo = row.children[3].textContent
-                .trim()
-                .toLowerCase() === "ativo";
+        const id = button.dataset.id;
+        const nome = button.dataset.nome;
 
-            const editRow = document.createElement("tr");
+        const editRow = document.createElement("tr");
 
-            editRow.classList.add("editRow");
+        editRow.classList.add("editRow");
 
-            editRow.innerHTML = `
-                <td colspan="5">
-                    <div class="editForm">
+        editRow.innerHTML = `
+            <td colspan="5">
 
-                        <input
-                            type="text"
-                            class="editInput"
-                            value="${nome}"
+                <form
+                    action="../../../backend/alterarUserSenha.php"
+                    method="POST"
+                    class="editForm"
+                >
+
+                    <input
+                        type="hidden"
+                        name="id"
+                        value="${id}"
+                    >
+
+                    <h3>Alterar senha de <strong>${nome}</strong></h3>
+
+                    <input
+                        type="password"
+                        name="novaSenha"
+                        class="editInput"
+                        placeholder="Nova senha"
+                        required
+                    >
+
+                    <input
+                        type="password"
+                        name="confirmarSenha"
+                        class="editInput"
+                        placeholder="Confirmar senha"
+                        required
+                    >
+
+                    <div class="editActions">
+
+                        <button
+                            type="button"
+                            class="cancelButton"
                         >
+                            Cancelar
+                        </button>
 
-                        <input
-                            type="email"
-                            class="editInput"
-                            value="${email}"
+                        <button
+                            type="submit"
+                            class="saveButton"
                         >
+                            Alterar senha
+                        </button>
 
-                        <select class="editSelect">
-                            <option ${perfil === "Aluno" ? "selected" : ""}>
-                                Aluno
-                            </option>
-
-                            <option ${perfil === "Professor" ? "selected" : ""}>
-                                Professor
-                            </option>
-
-                            <option ${perfil === "Administrador" ? "selected" : ""}>
-                                Administrador
-                            </option>
-                        </select>
-
-                        <div class="statusContainer">
-                            <input
-                                type="checkbox"
-                                class="statusToggle"
-                                ${ativo ? "checked" : ""}
-                            >
-
-                            <span>Ativo</span>
-                        </div>
-
-                        <div class="editActions">
-                            <button
-                                class="cancelButton"
-                                type="button"
-                            >
-                                Cancelar
-                            </button>
-
-                            <button
-                                class="saveButton"
-                                type="button"
-                            >
-                                Salvar
-                            </button>
-                        </div>
                     </div>
-                </td>
-            `;
 
-            row.insertAdjacentElement(
-                "afterend",
-                editRow
-            );
+                </form>
 
-            editRow
-                .querySelector(".cancelButton")
-                .addEventListener("click", () => {
-                    editRow.remove();
-                });
+            </td>
+        `;
 
-            editRow
-                .querySelector(".saveButton")
-                .addEventListener("click", () => {
-                    const novoNome = editRow.querySelectorAll(".editInput")[0].value;
-                    const novoEmail = editRow.querySelectorAll(".editInput")[1].value;
-                    const novoPerfil = editRow.querySelector(".editSelect").value;
-                    const ativo = editRow.querySelector(".statusToggle").checked;
+        row.insertAdjacentElement("afterend", editRow);
 
-                    row.children[0].textContent = novoNome;
-
-                    row.children[1].textContent = novoEmail;
-
-                    row.children[2].innerHTML = `<span class="badge perfil">${novoPerfil}</span>`;
-
-                    row.children[3].innerHTML = 
-                        ativo
-                            ? `<span class="badge ativo">Ativo</span>`
-                            : `<span class="badge inativo">Inativo</span>`;
-
-                    editRow.remove();
-                });
+        editRow.querySelector(".cancelButton").addEventListener("click", () => {
+            editRow.remove();
         });
+
     });
 
-    const deleteButtons =
-    document.querySelectorAll(".deleteButton");
+});
+
+    const deleteButtons = document.querySelectorAll(".deleteButton");
 
     deleteButtons.forEach(button => {
+
         button.addEventListener("click", (event) => {
-            event.preventDefault();
 
             const row = button.closest("tr");
             const nome = row.children[0].textContent.trim();
-            const confirmar = confirm(`Deseja realmente excluir o usuário "${nome}"?`);
 
-            if (!confirmar) {
-                return;
+            if (!confirm(`Deseja realmente desativar o usuário "${nome}"?`)) {
+
+                event.preventDefault();
+
             }
 
-            if (row.nextElementSibling?.classList.contains("editRow")) {
-                row.nextElementSibling.remove();
-            }
-
-            row.remove();
         });
+
     });
 });

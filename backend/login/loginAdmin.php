@@ -2,6 +2,9 @@
 session_start();
 include("../conector.php");
 
+include("../registrarLog.php");
+registrarLog($pdo, "Login realizado");
+
 $email = trim($_POST["email"]);
 $senha = $_POST["senha"];
 

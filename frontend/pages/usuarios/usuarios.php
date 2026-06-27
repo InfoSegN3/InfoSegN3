@@ -1,32 +1,42 @@
 <?php
-  session_start();
+session_start();
 
-  if (
+if (
     !isset($_SESSION['id']) ||
-    !in_array($_SESSION['tipo'], ['aluno','professor','admin'])
-  ) {
+    !in_array($_SESSION['tipo'], ['aluno', 'professor', 'admin'])
+) {
     header("Location: ../login/login.html");
     exit();
-  }
+}
 
-  // Busca todos os usuários cadastrados
-  include("../../../backend/conector.php");
-  $sql = $pdo->prepare("SELECT nome_usuario, email_usuario, tipo_usuario, ativo_usuario FROM usuarios");
-  $sql->execute();
-  $usuarios = $sql->fetchAll(PDO::FETCH_ASSOC);
+include("../../../backend/conector.php");
 
+$sql = $pdo->prepare("
+    SELECT
+        id_usuario,
+        nome_usuario,
+        email_usuario,
+        tipo_usuario,
+        ativo_usuario
+    FROM usuarios
+");
+
+$sql->execute();
+$usuarios = $sql->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Acadêmica</title>
-    
+
     <link rel="stylesheet" href="../../styles/style.css">
     <link rel="stylesheet" href="./usuarios.css">
 </head>
+
 <body>
     <div class="agendamentosApp">
         <div class="sidebar">
@@ -72,17 +82,18 @@
                         <a href="../auditoria/auditoria.php">Logs de Auditoria</a>
                     </div>
                 <?php endif; ?>
-
-                <!-- LOGOUT AQUI -->
-                <div class="line"></div>
-
-                <div class="logout">
-                    <img src="../../icons/shield.svg" alt="">
-                    <a href="../../../backend/login/logout.php">Sair</a>
-                </div>
-
             </div>
-            
+            <div class="trocarSenha">
+                <img src="../../icons/key.svg" alt="">
+                <a href="#" id="abrirTrocaSenha">
+                    Trocar senha
+                </a>
+            </div>
+            <div class="line"></div>
+            <div class="logout">
+                <img src="../../icons/shield.svg" alt="">
+                <a href="../../../backend/login/logout.php">Sair</a>
+            </div>
         </div>
 
         <div class="content">
@@ -114,20 +125,57 @@
                     <tbody>
                         <?php foreach ($usuarios as $usuario) : ?>
                             <tr>
-                                <td><?= $usuario['nome_usuario'] ?></td>
-                                <td><?= $usuario['email_usuario'] ?></td>
+                                <td><?= htmlspecialchars($usuario['nome_usuario']) ?></td>
+
+                                <td><?= htmlspecialchars($usuario['email_usuario']) ?></td>
+
                                 <td>
-                                    <span class="badge perfil"><?= $usuario['tipo_usuario'] ?></span>
-                                </td>
-                                <td>
-                                    <span class="badge <?= $usuario['ativo_usuario'] === 1 ? 'ativo' : 'inativo' ?>">
-                                        <?= $usuario['ativo_usuario'] === 1 ? 'Ativo' : 'Inativo' ?>
+                                    <span class="badge perfil">
+                                        <?= htmlspecialchars($usuario['tipo_usuario']) ?>
                                     </span>
                                 </td>
-                                <td class="actionsColumn">
-                                    <a href="#" class="editButton">Editar</a>
-                                    <a href="#" class="deleteButton">Excluir</a>
+
+                                <td>
+                                    <span class="badge <?= $usuario['ativo_usuario'] == 1 ? 'ativo' : 'inativo' ?>">
+                                        <?= $usuario['ativo_usuario'] == 1 ? 'Ativo' : 'Inativo' ?>
+                                    </span>
                                 </td>
+
+                                <td class="actionsColumn">
+
+                                    <a
+                                        href="#"
+                                        class="editButton"
+                                        data-id="<?= $usuario['id_usuario'] ?>"
+                                        data-nome="<?= htmlspecialchars($usuario['nome_usuario']) ?>"
+                                    >
+                                        Alterar senha
+                                    </a>
+
+                                    <?php if ($usuario['ativo_usuario'] == 1): ?>
+
+                                        <a
+                                            href="../../../backend/mudarStatusUsuario.php?id=<?= $usuario['id_usuario'] ?>&status=0"
+                                            class="deleteButton"
+                                            onclick="return confirm('Deseja realmente desativar este usuário?');"
+                                        >
+                                            Desativar
+                                        </a>
+
+                                    <?php else: ?>
+
+                                        <a
+                                            href="../../../backend/mudarStatusUsuario.php?id=<?= $usuario['id_usuario'] ?>&status=1"
+                                            class="editButton"
+                                            onclick="return confirm('Deseja reativar este usuário?');"
+                                        >
+                                            Ativar
+                                        </a>
+
+                                    <?php endif; ?>
+
+                                </td>
+
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -135,7 +183,79 @@
             </div>
         </div>
     </div>
+    <div id="trocaSenhaModal" class="modal">
 
+        <div class="modalContent">
+
+            <h2>Trocar senha</h2>
+
+            <p>Informe sua senha atual e defina uma nova senha.</p>
+
+            <form
+                action="../../../backend/trocarSenha.php"
+                method="POST"
+                class="cadastroForm">
+
+                <div class="formGroup">
+
+                    <label>Senha atual</label>
+
+                    <input
+                        type="password"
+                        name="senhaAtual"
+                        required>
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>Nova senha</label>
+
+                    <input
+                        type="password"
+                        name="novaSenha"
+                        minlength="8"
+                        required>
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>Confirmar nova senha</label>
+
+                    <input
+                        type="password"
+                        name="confirmarSenha"
+                        minlength="8"
+                        required>
+
+                </div>
+
+                <div class="formActions">
+
+                    <button
+                        type="button"
+                        class="cancelButton"
+                        id="cancelarTrocaSenha">
+                        Cancelar
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="submitButton">
+                        Alterar senha
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+    <script src="../../scripts/trocarSenha.js"></script>
     <script src="./usuarios.js"></script>
+
 </body>
+
 </html>
