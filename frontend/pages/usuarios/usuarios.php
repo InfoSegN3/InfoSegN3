@@ -143,16 +143,36 @@ $usuarios = $sql->fetchAll(PDO::FETCH_ASSOC);
 
                                 <td class="actionsColumn">
 
-                                    <a href="#" class="editButton">
-                                        Editar
+                                    <a
+                                        href="#"
+                                        class="editButton"
+                                        data-id="<?= $usuario['id_usuario'] ?>"
+                                        data-nome="<?= htmlspecialchars($usuario['nome_usuario']) ?>"
+                                    >
+                                        Alterar senha
                                     </a>
 
-                                    <a
-                                        href="../../../backend/mudarStatusUsuario.php?id=<?= $usuario['id_usuario'] ?>"
-                                        class="deleteButton"
-                                        onclick="return confirm('Deseja realmente desativar este usuário?');">
-                                        Excluir
-                                    </a>
+                                    <?php if ($usuario['ativo_usuario'] == 1): ?>
+
+                                        <a
+                                            href="../../../backend/mudarStatusUsuario.php?id=<?= $usuario['id_usuario'] ?>&status=0"
+                                            class="deleteButton"
+                                            onclick="return confirm('Deseja realmente desativar este usuário?');"
+                                        >
+                                            Desativar
+                                        </a>
+
+                                    <?php else: ?>
+
+                                        <a
+                                            href="../../../backend/mudarStatusUsuario.php?id=<?= $usuario['id_usuario'] ?>&status=1"
+                                            class="editButton"
+                                            onclick="return confirm('Deseja reativar este usuário?');"
+                                        >
+                                            Ativar
+                                        </a>
+
+                                    <?php endif; ?>
 
                                 </td>
 

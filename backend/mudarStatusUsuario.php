@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 include("conector.php");
 
 if (
@@ -10,26 +9,24 @@ if (
     die("Acesso negado.");
 }
 
-if (!isset($_GET["id"])) {
-    die("ID do usuário não informado.");
+if (!isset($_GET["id"]) || !isset($_GET["status"])) {
+    die("Parâmetros inválidos.");
 }
 
 $id = (int) $_GET["id"];
 
+$status = ($_GET["status"] == 1) ? 1 : 0;
+
 $sql = $pdo->prepare("
     UPDATE usuarios
-    SET ativo_usuario = 0
+    SET ativo_usuario = ?
     WHERE id_usuario = ?
 ");
 
-if ($sql->execute([$id])) {
+$sql->execute([
+    $status,
+    $id
+]);
 
-    header("Location: ../frontend/pages/usuarios/usuarios.php?status=desativado");
-
-} else {
-
-    header("Location: ../frontend/pages/usuarios/usuarios.php?status=erro");
-
-}
-
+header("Location: ../frontend/pages/usuarios/usuarios.php");
 exit();
