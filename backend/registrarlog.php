@@ -1,10 +1,13 @@
 <?php
+
 function registrarLog(PDO $pdo, string $acao): void {
-    $usuario_id = $_SESSION['id'] ?? null;
-    $data_hora  = date('Y-m-d H:i:s');
- 
-    $sql = $pdo->prepare("INSERT INTO logs (usuario_id, acao, data_hora) VALUES (?, ?, ?)");
-    $sql->execute([$usuario_id, $acao, $data_hora]);
+    $sql = $pdo->prepare("INSERT INTO logs (usuario_id, acao, data_hora) VALUES (?, ?, NOW())");
+    $sql->execute([$_SESSION['id'] ?? null, $acao]);
 }
 
 ?>
+
+include("../registrarLog.php");
+registrarLog($pdo, "Login realizado");
+registrarLog($pdo, "Usuário cadastrado");
+registrarLog($pdo, "Agendamento criado");

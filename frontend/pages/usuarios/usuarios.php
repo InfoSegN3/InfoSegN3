@@ -1,32 +1,42 @@
 <?php
-  session_start();
+session_start();
 
-  if (
+if (
     !isset($_SESSION['id']) ||
-    !in_array($_SESSION['tipo'], ['aluno','professor','admin'])
-  ) {
+    !in_array($_SESSION['tipo'], ['aluno', 'professor', 'admin'])
+) {
     header("Location: ../login/login.html");
     exit();
-  }
+}
 
-  // Busca todos os usuários cadastrados
-  include("../../../backend/conector.php");
-  $sql = $pdo->prepare("SELECT nome_usuario, email_usuario, tipo_usuario, ativo_usuario FROM usuarios");
-  $sql->execute();
-  $usuarios = $sql->fetchAll(PDO::FETCH_ASSOC);
+include("../../../backend/conector.php");
 
+$sql = $pdo->prepare("
+    SELECT
+        id_usuario,
+        nome_usuario,
+        email_usuario,
+        tipo_usuario,
+        ativo_usuario
+    FROM usuarios
+");
+
+$sql->execute();
+$usuarios = $sql->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Acadêmica</title>
-    
+
     <link rel="stylesheet" href="../../styles/style.css">
     <link rel="stylesheet" href="./usuarios.css">
 </head>
+
 <body>
     <div class="agendamentosApp">
         <div class="sidebar">
@@ -115,20 +125,37 @@
                     <tbody>
                         <?php foreach ($usuarios as $usuario) : ?>
                             <tr>
-                                <td><?= $usuario['nome_usuario'] ?></td>
-                                <td><?= $usuario['email_usuario'] ?></td>
+                                <td><?= htmlspecialchars($usuario['nome_usuario']) ?></td>
+
+                                <td><?= htmlspecialchars($usuario['email_usuario']) ?></td>
+
                                 <td>
-                                    <span class="badge perfil"><?= $usuario['tipo_usuario'] ?></span>
-                                </td>
-                                <td>
-                                    <span class="badge <?= $usuario['ativo_usuario'] === 1 ? 'ativo' : 'inativo' ?>">
-                                        <?= $usuario['ativo_usuario'] === 1 ? 'Ativo' : 'Inativo' ?>
+                                    <span class="badge perfil">
+                                        <?= htmlspecialchars($usuario['tipo_usuario']) ?>
                                     </span>
                                 </td>
-                                <td class="actionsColumn">
-                                    <a href="#" class="editButton">Editar</a>
-                                    <a href="#" class="deleteButton">Excluir</a>
+
+                                <td>
+                                    <span class="badge <?= $usuario['ativo_usuario'] == 1 ? 'ativo' : 'inativo' ?>">
+                                        <?= $usuario['ativo_usuario'] == 1 ? 'Ativo' : 'Inativo' ?>
+                                    </span>
                                 </td>
+
+                                <td class="actionsColumn">
+
+                                    <a href="#" class="editButton">
+                                        Editar
+                                    </a>
+
+                                    <a
+                                        href="../../../backend/mudarStatusUsuario.php?id=<?= $usuario['id_usuario'] ?>"
+                                        class="deleteButton"
+                                        onclick="return confirm('Deseja realmente desativar este usuário?');">
+                                        Excluir
+                                    </a>
+
+                                </td>
+
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -147,8 +174,7 @@
             <form
                 action="../../../backend/trocarSenha.php"
                 method="POST"
-                class="cadastroForm"
-            >
+                class="cadastroForm">
 
                 <div class="formGroup">
 
@@ -157,8 +183,7 @@
                     <input
                         type="password"
                         name="senhaAtual"
-                        required
-                    >
+                        required>
 
                 </div>
 
@@ -170,8 +195,7 @@
                         type="password"
                         name="novaSenha"
                         minlength="8"
-                        required
-                    >
+                        required>
 
                 </div>
 
@@ -183,8 +207,7 @@
                         type="password"
                         name="confirmarSenha"
                         minlength="8"
-                        required
-                    >
+                        required>
 
                 </div>
 
@@ -193,15 +216,13 @@
                     <button
                         type="button"
                         class="cancelButton"
-                        id="cancelarTrocaSenha"
-                    >
+                        id="cancelarTrocaSenha">
                         Cancelar
                     </button>
 
                     <button
                         type="submit"
-                        class="submitButton"
-                    >
+                        class="submitButton">
                         Alterar senha
                     </button>
 
@@ -216,4 +237,5 @@
     <script src="./usuarios.js"></script>
 
 </body>
+
 </html>

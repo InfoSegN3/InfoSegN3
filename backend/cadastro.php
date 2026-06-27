@@ -3,6 +3,9 @@ session_start();
 include("conector.php");
 include("gerarSenha.php");
 
+include("registrarLog.php");
+registrarLog($pdo, "Usuário cadastrado");
+
 if (!isset($_SESSION['tipo'])) {
   die("Acesso negado.");
 }
@@ -44,8 +47,8 @@ switch ($tipoUsuario) {
 
     $sql = $pdo->prepare("
         INSERT INTO admins
-        (nome_admin, email_admin, senha_admin)
-        VALUES (?, ?, ?)
+        (nome_admin, email_admin, senha_admin, ativo_admin)
+        VALUES (?, ?, ?, 1)
     ");
 
     $executar = $sql->execute([
@@ -69,8 +72,8 @@ switch ($tipoUsuario) {
 
     $sql = $pdo->prepare("
         INSERT INTO usuarios
-        (nome_usuario, email_usuario, senha_usuario, tipo_usuario)
-        VALUES (?, ?, ?, ?)
+        (nome_usuario, email_usuario, senha_usuario, tipo_usuario, ativo_usuario)
+        VALUES (?, ?, ?, ?, 1)
     ");
 
     $executar = $sql->execute([

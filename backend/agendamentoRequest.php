@@ -1,5 +1,9 @@
 <?php
 session_start();
+include("conector.php");
+
+include("registrarLog.php");
+registrarLog($pdo, "Agendamento criado");
 
 if (
     !isset($_SESSION['id']) ||
@@ -9,7 +13,6 @@ if (
     exit();
 }
 
-require_once("conector.php");
 
 $alunoId = $_SESSION['id'];
 
