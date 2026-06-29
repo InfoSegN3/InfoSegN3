@@ -1,6 +1,5 @@
 <?php
   session_start();
-
   if (
     !isset($_SESSION['id']) ||
     !in_array($_SESSION['tipo'], ['aluno','professor','admin'])
@@ -8,8 +7,24 @@
     header("Location: ../login/login.html");
     exit();
   }
-?>
 
+  // Ajuste o caminho/nome do arquivo de conexão conforme o seu projeto.
+  // Esse arquivo deve criar a variável $conn (mysqli).
+    include("../../../backend/conector.php");
+
+$consulta = $pdo->prepare("
+    SELECT
+        logs.*,
+        usuarios.nome_usuario AS usuario_nome
+    FROM logs
+    LEFT JOIN usuarios
+        ON logs.usuario_id = usuarios.id_usuario
+    ORDER BY logs.data_hora DESC
+");
+$consulta->execute();
+
+$logs = $consulta->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,33 +47,27 @@
                     <p>Atendimentos</p>
                 </div>
             </div>
-
             <div class="line"></div>
-
             <div class="navigation">
                 <p>Navegação</p>
-
                 <?php if ($_SESSION['tipo'] === 'aluno' || $_SESSION['tipo'] === 'professor') : ?>
                     <div class="agendamentos">
                         <img src="../../icons/dashboard.svg" alt="">
                         <a href="../agendamentos/agendamentos.php">Meus Agendamentos</a>
                     </div>
                 <?php endif; ?>
-
                 <?php if ($_SESSION['tipo'] === 'aluno') : ?>
                     <div class="novoAgendamento">
                         <img src="../../icons/new.svg" alt="">
                         <a href="../novoAgendamento/novoAgendamento.php">Novo Agendamento</a>
                     </div>
                 <?php endif; ?>
-
                 <?php if ($_SESSION['tipo'] === 'admin') : ?>
                     <div class="usuarios">
                         <img src="../../icons/users.svg" alt="">
                         <a href="../usuarios/usuarios.php">Usuários</a>
                     </div>
                 <?php endif; ?>
-
                 <?php if ($_SESSION['tipo'] === 'admin') : ?>
                     <div class="logs">
                         <img src="../../icons/shield.svg" alt="">
@@ -78,144 +87,107 @@
                 <a href="../../../backend/login/logout.php">Sair</a>
             </div>
         </div>
-
         <div class="content">
             <h1>Logs de Auditoria</h1>
-
             <div class="auditoriaContainer">
                 <div class="auditoriaHeader">
                     <h2>Eventos registrados</h2>
                     <p>
-                        Registros simulados para fins de demonstração.
-                        Em produção, virão do serviço de auditoria.
+                        Registros de ações realizadas no sistema.
                     </p>
                 </div>
-
                 <div class="searchContainer">
                     <input
                         type="text"
-                        placeholder="Filtrar por usuário, ação ou IP..."
+                        id="filtroAuditoria"
+                        placeholder="Filtrar por usuário ou ação..."
                     >
                 </div>
-
                 <table class="auditoriaTable">
                     <thead>
                         <tr>
                             <th>Data/Hora</th>
                             <th>Usuário</th>
                             <th>Ação</th>
-                            <th>Endereço IP</th>
-                            <th>Status</th>
                         </tr>
                     </thead>
-
                     <tbody>
-                        <tr>
-                            <td>23/06/2026 19:41:14</td>
-                            <td>maria@aluno.edu</td>
-                            <td><span class="badge action">LOGIN</span></td>
-                            <td>192.168.0.10</td>
-                            <td><span class="badge sucesso">Sucesso</span></td>
-                        </tr>
+                        <?php if (count($logs) > 0) : ?>
+                            <?php foreach ($logs as $log) : ?>
+                                <tr>
+                                    <td>
+                                        <?= htmlspecialchars(date('d/m/Y H:i:s', strtotime($log['data_hora']))) ?>
+                                    </td>
+                                    <td>
+                                        <?php if (!empty($log['usuario_nome'])) : ?>
+                                            <?= htmlspecialchars($log['usuario_nome']) ?>
+                                        <?php elseif (!empty($log['usuario_id'])) : ?>
+                                            Usuário #<?= htmlspecialchars($log['usuario_id']) ?>
+                                        <?php else : ?>
+                                            Sistema
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <span class="badge action">
+                                            <?php
+                                                $acao = $log['acao'];
 
-                        <tr>
-                            <td>23/06/2026 18:41:14</td>
-                            <td>joao@univ.edu</td>
-                            <td><span class="badge action">CRIOU_AGENDAMENTO</span></td>
-                            <td>192.168.0.11</td>
-                            <td><span class="badge sucesso">Sucesso</span></td>
-                        </tr>
+                                                if (empty($log['usuario_id']) && stripos($acao, 'login realizado') !== false) {
+                                                    $acao = 'Tentativa de login';
+                                                }
 
-                        <tr>
-                            <td>23/06/2026 15:41:14</td>
-                            <td>maria@aluno.edu</td>
-                            <td><span class="badge action">LOGOUT</span></td>
-                            <td>192.168.0.14</td>
-                            <td><span class="badge falha">Falha</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>23/06/2026 14:41:14</td>
-                            <td>joao@univ.edu</td>
-                            <td><span class="badge action">EDITOU_USUARIO</span></td>
-                            <td>192.168.0.15</td>
-                            <td><span class="badge sucesso">Sucesso</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>23/06/2026 13:41:14</td>
-                            <td>carla@univ.edu</td>
-                            <td><span class="badge action">LOGIN</span></td>
-                            <td>192.168.0.16</td>
-                            <td><span class="badge sucesso">Sucesso</span></td>
-                        </tr>
-
-                        <tr>
-                            <td>23/06/2026 12:41:14</td>
-                            <td>pedro@aluno.edu</td>
-                            <td><span class="badge action">CRIOU_AGENDAMENTO</span></td>
-                            <td>192.168.0.17</td>
-                            <td><span class="badge falha">Falha</span></td>
-                        </tr>
+                                                echo htmlspecialchars($acao);
+                                            ?>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <tr>
+                                <td colspan="3">Nenhum log encontrado.</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
         <div id="trocaSenhaModal" class="modal">
-
         <div class="modalContent">
-
             <h2>Trocar senha</h2>
-
             <p>Informe sua senha atual e defina uma nova senha.</p>
-
             <form
                 action="../../../backend/trocarSenha.php"
                 method="POST"
                 class="cadastroForm"
             >
-
                 <div class="formGroup">
-
                     <label>Senha atual</label>
-
                     <input
                         type="password"
                         name="senhaAtual"
                         required
                     >
-
                 </div>
-
                 <div class="formGroup">
-
                     <label>Nova senha</label>
-
                     <input
                         type="password"
                         name="novaSenha"
                         minlength="8"
                         required
                     >
-
                 </div>
-
                 <div class="formGroup">
-
                     <label>Confirmar nova senha</label>
-
                     <input
                         type="password"
                         name="confirmarSenha"
                         minlength="8"
                         required
                     >
-
                 </div>
-
                 <div class="formActions">
-
                     <button
                         type="button"
                         class="cancelButton"
@@ -223,20 +195,15 @@
                     >
                         Cancelar
                     </button>
-
                     <button
                         type="submit"
                         class="submitButton"
                     >
                         Alterar senha
                     </button>
-
                 </div>
-
             </form>
-
         </div>
-
     </div>
     <script src="../../scripts/trocarSenha.js"></script>
 </body>

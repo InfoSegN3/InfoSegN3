@@ -102,6 +102,6 @@ else {
     ]);
 
 }
-
-header("Location: ../frontend/pages/usuarios/usuarios.php?status=senhaAlterada");
+session_destroy();
+header("Location: ../frontend/pages/login/login.html");
 exit();

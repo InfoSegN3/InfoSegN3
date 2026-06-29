@@ -51,7 +51,7 @@ $_SESSION['tipo'] = $usuario['tipo_usuario']; // 'aluno' ou 'professor', vindo d
 
 // Verifica se é o primeiro login
 if ($usuario['primeiro_acesso']) {
-    header("Location: ../../frontend/pages/trocarSenha/trocarSenha.php");
+    header("Location: ../../frontend/pages/agendamentos/agendamentos.php");
     exit();
 }
 
